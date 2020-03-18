@@ -1,0 +1,40 @@
+# SUBCONSULTAS #
+
+/*
+ *SON CONSULTAS QUE SE EJECUTAN DENTRO DE OTRAS #
+ *CONSISTEN EN UTILIZAR LOS RESULTADOS DE LA CONSULTA PARA OPERAR EN LA CONSULTA PRINCIPAL #
+ *JUGAR CON LAS CLAVES AJENAS / FORANEAS #
+*/
+
+INSERT INTO usuarios VALUE(null, 'Damesiano', 'Prieto', 'samesiano@prieto.com', 'dame123', CURDATE()); # INSERSION DE USER #
+
+SELECT * FROM usuarios WHERE id IN (SELECT usuario_id FROM entradas);   # IN = EXISTE DENTRO DE #
+SELECT * FROM usuarios WHERE id NOT IN (SELECT usuario_id FROM entradas);   # NOT IN = NO EXISTE DENTRO DE #
+
+# SACAR LOS USUARIOS QUE TENGAN ALGUNA ENTRADA QUE EN SU TITULO HABLE DE GTA#
+INSERT INTO entradas VALUES(null, 3, 1, 'Guia de GTA vice City', 'GTA', CURDATE()); 
+
+SELECT nombre, apellidos FROM usuarios WHERE id 
+    IN (SELECT usuario_id FROM entradas WHERE titulo LIKE "%GTA%");   
+
+# ####################  EJEMPLOS  #################### #
+
+# SACAR TODAS LAS ENTRADAS DE LA CATEGORIA "ACCION# UTILIZANDO SU NOMBRE #
+SELECT * FROM entradas WHERE categoria_id 
+    IN (SELECT id FROM categorias WHERE nombre = 'Acción' );
+
+# MOSTRAR LAS CATEGORIAS CON  3 O MAS ENTRADAS #
+SELECT * FROM categorias WHERE id 
+    IN (SELECT categoria_id FROM entradas GROUP BY categoria_id HAVING COUNT(categoria_id) >= 3);
+
+# MOSTRAR LOS USUARIOS QUE CREARON UNA UN MARTES #
+SELECT * FROM usuarios WHERE id 
+    IN (SELECT usuario_id FROM entradas WHERE DAYOFWEEK(fecha)=3); # LOS DIAS DE LA SEMANA COMIENZAN A CONTARSE DESDE EL DOMINGO
+
+# MOSTRAR EL NOMBRE DEL USUARIO QUE TENGA MAS ENTRADAS #
+SELECT * FROM usuarios WHERE id =
+    (SELECT usuario_id FROM entradas GROUP BY usuario_id ORDER BY COUNT(id) DESC LIMIT 1);
+
+# MOSTRAR LAS CATEGORIAS SIN ENTRADAS # 
+SELECT * FROM categorias WHERE id
+    NOT IN (SELECT categoria_id FROM entradas);
