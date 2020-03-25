@@ -9,8 +9,8 @@ echo '<h1>'.apellidos.'</h1>';
 
 //Constantes predefinidas
 
-echo PHP_OS;
-echo PHP_VERSION;
+echo PHP_OS .'<br>';
+echo PHP_VERSION.'<br>';
 echo __FILE__;
 echo __FUNCTION__;
 echo __LINE__;
