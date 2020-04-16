@@ -14,10 +14,9 @@
             while ($entrada = mysqli_fetch_assoc($entradas)):
         ?> 
             <article class="entrada">
-            <?php var_dump($entrada); ?>
                 <a href="">
                     <h2>
-                        <?=$entraoida['titulo']?>
+                        <?=$entrada['titulo']?>
                     </h2>
                         <span class ="fecha"><?=$entrada['categoria'].' | '.$entrada['fecha']?></span>
                     <p>
