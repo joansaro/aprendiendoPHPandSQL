@@ -1,60 +1,80 @@
-<?php require_once 'includes/helpers.php'; ?>
-
 <aside id="sidebar">
-    <div id="login" class="bloque">
-        <h3>Identificate</h3>
-        <form action="login.php" method="POST">
-            <label for="email" name="email">Email</label>
-            <input type="email" name="email">
-            
-            <label for="password" name="password">password</label>
-            <input type="password" name="password" >
+    
+    <?php if(isset($_SESSION['usuario'])):?>
+        <div id="usuario-logueado" class="bloque">
+            <h3>Bienvenido, <?=$_SESSION['usuario']['nombre'].' '.$_SESSION['usuario']['apellidos']; ?> </h3>
+            <!--Botones-->
+            <a href="cerrar.php" class="boton">Crear entradas</a>
+            <a href="crear-categoria.php" class="boton boton-verde">Crear categorias</a>
+            <a href="cerrar.php" class="boton boton-naranja">Mis datos</a>
+            <a href="cerrar.php" class="boton boton-rojo">Cerrar sesión</a>
+        </div>
+    <?php endif;?>
 
-            <input type="submit" value="Entrar">
-        </form>
-    </div>
+    <?php if(!isset($_SESSION['usuario'])):?>
 
+        <div id="login" class="bloque">
+            <h3>Identificate</h3>
 
-    <div id="register" class="bloque">
-
-        <h3>Registrate</h3>
+        <?php if(isset($_SESSION['errorLogin'])):?>
+            <div class="alerta alerta-error" class="bloque">
+                <?=$_SESSION['errorLogin']; ?>
+            </div>
+        <?php endif;?>
         
-         <!--Mostrar errores -->
-        <?php if (isset($_SESSION['completado'])) : ?>
-            <div class="alerta alerta-exito">
-                <?php echo $_SESSION['completado']; ?>
-            </div>
-        <?php elseif (isset($_SESSION['errores']['general'])) : ?>
-            <div class="alerta alerta-exito">
-                <?= $_SESSION['errores']['general']; ?>
-            </div>
-        <?php endif; ?>
+
+            <form action="login.php" method="POST">
+                <label for="email" name="email">Email</label>
+                <input type="email" name="email">
                 
-        <form action="registro.php" method="POST">
-            <label for="nombre" name="nombre">Nombre</label>
-            <input type="text" name="nombre">
-            <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'nombre') : ''?>
-        
-            <label for="apellidos" name="apellidos">Apellidos</label>
-            <input type="text" name="apellidos">
-            <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'apellidos') : ''?>
+                <label for="password" name="password">password</label>
+                <input type="password" name="password" >
+
+                <input type="submit" value="Entrar">
+            </form>
+        </div>
 
 
-            <label for="email" name="email">Email</label>
-            <input type="email" name="email">
-            <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'email') : ''?>
+        <div id="register" class="bloque">
 
+            <h3>Registrate</h3>
             
-            <label for="password" name="password">password</label>
-            <input type="password" name="password">
-            <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'password') : ''?>
+            <!--Mostrar errores -->
+            <?php if (isset($_SESSION['completado'])) : ?>
+                <div class="alerta alerta-exito">
+                    <?php echo $_SESSION['completado']; ?>
+                </div>
+            <?php elseif (isset($_SESSION['errores']['general'])) : ?>
+                <div class="alerta alerta-exito">
+                    <?= $_SESSION['errores']['general']; ?>
+                </div>
+            <?php endif; ?>
+                    
+            <form action="registro.php" method="POST">
+                <label for="nombre" name="nombre">Nombre</label>
+                <input type="text" name="nombre">
+                <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'nombre') : ''?>
+            
+                <label for="apellidos" name="apellidos">Apellidos</label>
+                <input type="text" name="apellidos">
+                <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'apellidos') : ''?>
 
 
-            <input type="submit" name="submit" value="Registrar">
-        </form>
+                <label for="email" name="email">Email</label>
+                <input type="email" name="email">
+                <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'email') : ''?>
 
-        <?php borrarErrores(); ?>
+                
+                <label for="password" name="password">password</label>
+                <input type="password" name="password">
+                <?php echo isset($_SESSION['errores']) ? mostrarError($_SESSION['errores'], 'password') : ''?>
 
-    </div>
 
+                <input type="submit" name="submit" value="Registrar">
+            </form>
+
+            <?php borrarErrores(); ?>
+
+        </div>
+    <?php endif;?>
 </aside>

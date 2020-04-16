@@ -3,13 +3,15 @@ if(isset($_POST)){
     //Conexion a la base de datos
     require_once 'includes/conexion.php';
 
+    if(!isset($_SESSION)){
     session_start();
+    }
 
     //Usando operador ternario
-    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : false; 
-    $apellidos = isset($_POST['apellidos']) ? $_POST['apellidos'] : false;
-    $email = isset($_POST['email']) ? $_POST['email'] : false;
-    $password = isset($_POST['password']) ? $_POST['password'] : false;
+    $nombre = isset($_POST['nombre']) ? mysqli_real_escape_string($db, $_POST['nombre']) : false; 
+    $apellidos = isset($_POST['apellidos']) ? mysqli_real_escape_string($db, $_POST['apellidos']) : false;
+    $email = isset($_POST['email']) ? mysqli_real_escape_string($db, trim($_POST['email'])) : false;
+    $password = isset($_POST['password']) ? mysqli_real_escape_string($db, $_POST['password']) : false;
     
     //Arrary de errores
     $errores = array();
@@ -59,8 +61,7 @@ if(isset($_POST)){
         $sql = "INSERT INTO usuarios VALUES(null, '$nombre', '$apellidos', '$email', '$passwordSegura', CURDATE())";
         $guardar = mysqli_query($db, $sql);
 
-        var_dump(mysqli_error($db));
-        die();
+
 
         if ($guardar) {
             $_SESSION['completado'] = "EL registro se a completado satisfactoriamente";
