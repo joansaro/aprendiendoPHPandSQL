@@ -3,22 +3,32 @@
 <!-- CABECERA -->
 <?php require_once 'includes/cabecera.php'; ?>
 
+
+    <?php
+        $entrada = conseguirEntrada($db, $_GET['id']);
+
+        if (!isset($entrada['id'])) {
+            header('Location: index.php');
+        }
+    ?>
+
+
 <!-- BARRA LATERAL -->
 <?php require_once 'includes/lateral.php'; ?>
 
+
 <div id="principal">
-    <h1>Crear entradas</h1>
+    <h1>Editar entrada</h1>
     <p>
-        Añade nuevas entradas al blog para que los usuarios puedan leerlas y disfrutar de nuestro contenido.
-    </p>
+        Edita tu entrada <?=$entrada['titulo']?>   </p>
     <br>
-    <form action="guardar-entrada.php" method="POST">
+    <form action="guardar-entrada.php?editar=<?=$entrada['id']?>" method="POST">
         <label for="titulo">Titulo de la entrada</label>
-        <input type="text" name="titulo">
+        <input type="text" name="titulo" value="<?=$entrada['titulo']?>">
         <?php echo isset($_SESSION['erroresEntrada']) ? mostrarError($_SESSION['erroresEntrada'], 'titulo') : ''?>
 
         <label for="descripcion">Descripción</label>
-        <textarea name="descripcion" cols="100" rows="15"></textarea>
+        <textarea name="descripcion" cols="100" rows="15" ><?=$entrada['descripcion']?></textarea>
         <?php echo isset($_SESSION['erroresEntrada']) ? mostrarError($_SESSION['erroresEntrada'], 'descripcion') : ''?>
 
         <label for="categoria">categoria</label>
@@ -29,7 +39,8 @@
                     while ($categoria = mysqli_fetch_assoc($categorias)):
             ?>
 
-                <option value="<?=$categoria['id']?>">
+                <option value="<?=$categoria['id']?>" 
+                <?=($categoria['id'] == $entrada['categoria_id']) ? 'selected = "selected"' : '' ?>>
                     <?=$categoria['nombre']?>
                 </option>
 
@@ -48,6 +59,7 @@
     <?php borrarErrores(); ?>
 
 </div>
+
 
 <!-- PIE DE PAGINA -->
 <?php require_once 'includes/pie.php'; ?>

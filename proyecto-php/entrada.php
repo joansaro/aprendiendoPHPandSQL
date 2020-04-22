@@ -30,11 +30,10 @@
 <br>
 
     <?php if(isset($_SESSION['usuario']) && $_SESSION['usuario']['id'] == $entrada['usuario_id']): ?>
-        <a href="editar-entrada.php" class="boton boton-naranja">Editar entrada</a>
-        <a href="eliminar-entrada.php" class="boton boton-rojo">Eliminar entrada</a>
+        <a href="editar-entrada.php?id=<?=$entrada['id']?>" class="boton boton-naranja">Editar entrada</a>
+        <a href="borrar-entrada.php?id=<?=$entrada['id']?>" class="boton boton-rojo">Eliminar entrada</a>
     <?php endif;?>
 </div>
 
 <!-- PIE DE PAGINA -->
 <?php require_once 'includes/pie.php'; ?>
-s
